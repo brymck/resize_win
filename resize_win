@@ -13,18 +13,24 @@ eof
   exit 1
 end
 
-# Use command line arguments if available, otherwise prompt user
-case ARGV.size
-when 0
-  print "Enter width:  "
-  width = gets.chomp
+if !ARGV.empty? && ARGV.last =~ /^\d+p$/
+  height = ARGV.last.to_i
+  width  = height * 16 / 9
+  name   = ARGV.first if ARGV.size == 2
+else
+  # Use command line arguments if available, otherwise prompt user
+  case ARGV.size
+  when 0
+    print "Enter width:  "
+    width = gets.chomp
 
-  print "Enter height: "
-  height = gets.chomp
-when 2
-  width, height = ARGV
-when 3
-  name, width, height = ARGV
+    print "Enter height: "
+    height = gets.chomp
+  when 2
+    width, height = ARGV
+  when 3
+    name, width, height = ARGV
+  end
 end
 
 width, height = width.to_i, height.to_i

@@ -34,3 +34,4 @@ And even the name of the Application:
 
     resize_win Terminal 1280 720
     resize_win "Google Chrome" 1440 900
+    resize_win MacVim 720p
