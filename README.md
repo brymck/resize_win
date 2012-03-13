@@ -7,7 +7,17 @@ screenshots, screencasts, etc.
 Installation
 ------------
 
-    git clone git://github.com/brymck/resize_win.get
+### Global
+
+    sudo curl https://raw.github.com/brymck/resize_win/master/resize_win > /usr/bin/resize_win
+    sudo chmod +x /usr/bin/resize_win
+
+### Local
+
+You can of course also save the script anywhere in your `$PATH`:
+
+    curl https://raw.github.com/brymck/resize_win/master/resize_win > ~/bin/resize_win
+    chmod +x ~/bin/resize_win
 
 Usage
 -----
