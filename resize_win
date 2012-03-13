@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby -wKU
+# Make sure rb-appscript is installed
+begin
+  require "appscript"
+rescue LoadError
+  puts <<-eof
+rb-appscript not installed. Run
+
+gem install rb-appscript
+
+and then trying running this script again
+eof
+  exit 1
+end
+
+# Use command line arguments if available, otherwise prompt user
+case ARGV.size
+when 0
+  print "Enter width:  "
+  width = gets.chomp.to_i
+
+  print "Enter height: "
+  height = gets.chomp.to_i
+when 2
+  width, height = ARGV.map(&:to_i)
+end
+
+processes = Appscript.app("System Events").application_processes.get
+main_process = firstmost = processes.find { |p| p.frontmost.get }
+
+if firstmost.name.get =~ /terminal/i
+  firstmost.visible.set false
+  main_process = processes.find { |p| p.frontmost.get }
+  firstmost.visible.set true
+end
+
+top_window = main_process.windows.first
+
+begin
+  top_window.position.set [1, 1]
+  top_window.size.set [width + 1, height + 1]
+rescue Appscript::CommandError
+  puts "Could not resize #{main_process.name.get} to #{width}x#{height}"
+end
