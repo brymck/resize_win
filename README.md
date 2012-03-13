@@ -29,3 +29,8 @@ If you wanted to be prompted for size, just run this:
 You can also specify your own resolution:
 
     resize_win 1280 720
+
+And even the name of the Application:
+
+    resize_win Terminal 1280 720
+    resize_win "Google Chrome" 1440 900

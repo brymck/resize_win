@@ -17,25 +17,37 @@ end
 case ARGV.size
 when 0
   print "Enter width:  "
-  width = gets.chomp.to_i
+  width = gets.chomp
 
   print "Enter height: "
-  height = gets.chomp.to_i
+  height = gets.chomp
 when 2
-  width, height = ARGV.map(&:to_i)
+  width, height = ARGV
+when 3
+  name, width, height = ARGV
 end
 
+width, height = width.to_i, height.to_i
+
+# Get the frontmost process
 processes = Appscript.app("System Events").application_processes.get
 main_process = firstmost = processes.find { |p| p.frontmost.get }
 
-if firstmost.name.get =~ /terminal/i
+# Test the name of the frontmost process, ending if it matches the name
+# supplied through the command line, or if it's equal to Terminal and we're
+# looking for the second frontmost process
+if !name.nil?
+  if main_process.name.get != name
+    main_process = processes.find { |p| p.name.get == name }
+  end
+elsif firstmost.name.get =~ /terminal/i
   firstmost.visible.set false
   main_process = processes.find { |p| p.frontmost.get }
   firstmost.visible.set true
 end
 
+# Attempt to set the position of the top window of the targeted process
 top_window = main_process.windows.first
-
 begin
   top_window.position.set [1, 1]
   top_window.size.set [width + 1, height + 1]
